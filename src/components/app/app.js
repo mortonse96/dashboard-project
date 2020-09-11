@@ -1,12 +1,12 @@
 import React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import Sidebar from '../sidebar/sidebar';
 import Header from '../header/header';
 import styled, { ThemeProvider } from 'styled-components';
 import Themes from '../../models/Themes';
 import Dashboard from '../pages/dashboard';
 
-export default function App({ theme = Themes.Blue }) {
+function App({ theme = Themes.Blue }) {
   return (
     <ThemeProvider theme={theme}>
       <PageContainer fluid={'lg'}>
@@ -39,3 +39,6 @@ const PageContainer = styled(Container)`
 const MainWrapper = styled(Row)`
   background-color: ${(props) => props.theme.dividerColor.color};
 `;
+
+export default App;
+

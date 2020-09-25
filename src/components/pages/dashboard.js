@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Col, Container, Row } from 'react-bootstrap';
 import H3 from '../typography/H3';
 import RevenueCard from '../revenue-card/revenue-card';
-import ExpensesCard from '../expenses-card/expenses-card';
-import ExpensesCardAdvanced from '../expenses-card/expenses-card-advanced';
+import Grid from '@material-ui/core/Grid';
+import RevenueForm from '../forms/revenue-form';
 
 const Dashboard = ({
   className,
@@ -15,44 +14,28 @@ const Dashboard = ({
       className={['Dashboard', className].join(' ')}
       {...props}
     >
-      <Container fluid={true}>
-        <Row>
-          <Col>
-            <H3>
-              Revenue
-            </H3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <RevenueCard />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <H3>
-              Expenses
-            </H3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ExpensesCard />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <H3>
-              Expenses - Advanced
-            </H3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ExpensesCardAdvanced />
-          </Col>
-        </Row>
-      </Container>
+      <Grid>
+        <Grid
+          item
+          xs={12}
+        >
+          <H3>
+            Revenue
+          </H3>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+        >
+          <RevenueCard />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+        >
+          <RevenueForm />
+        </Grid>
+      </Grid>
     </Wrapper>
   );
 };

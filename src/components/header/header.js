@@ -1,34 +1,46 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Col, Container, Nav, Row } from 'react-bootstrap';
-import H2 from '../typography/H2';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import MenuIcon from '@material-ui/icons/Menu';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
-const Header = () => {
+const Header = ({
+  handleDrawerOpen,
+  ...props
+}) => {
   return (
-    <HeaderContainer>
-      <Row>
-        <Col>
-          <StyledNav>
-            <Nav.Item>
-              <H2>
-                Dashboard
-              </H2>
-            </Nav.Item>
-          </StyledNav>
-        </Col>
-      </Row>
-    </HeaderContainer>
+    <AppBar position="absolute">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+        >
+          Dashboard
+        </Typography>
+        <IconButton color="inherit">
+          <Badge
+            badgeContent={4}
+            color="secondary"
+          >
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 };
-
-const StyledNav = styled(Nav)`
-  padding-left: 15px;
-  background-color: ${(props) => props.theme.accentColor.color};
-  box-shadow: 3px 3px 8px rgba(0,0,0,.15);
-`;
-const HeaderContainer = styled(Container)`
-  padding-left: 0;
-  padding-right: 0;
-`;
 
 export default Header;

@@ -1,44 +1,35 @@
 import React from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import Sidebar from '../sidebar/sidebar';
-import Header from '../header/header';
-import styled, { ThemeProvider } from 'styled-components';
-import Themes from '../../models/Themes';
-import Dashboard from '../pages/dashboard';
+import { useObserver } from 'mobx-react-lite';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { green, pink } from '@material-ui/core/colors';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CreateGlobalStore from '../../modules/create-global-store';
+import StoreProvider from '../../contexts/store-provider/store-provider';
+import CurrentPage from '../pages/current-page';
 
-function App({ theme = Themes.Blue }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <PageContainer fluid={'lg'}>
-        <MainWrapper noGutters>
-          <Col
-            xs={3}
-            xl={2}
-          >
-            <Sidebar />
-          </Col>
-          <Col
-            xs={9}
-            xl={10}
-          >
-            <Header />
-            <Dashboard />
-          </Col>
-        </MainWrapper>
-      </PageContainer>
-    </ThemeProvider>
-  );
+function App() {
+  const theme = createMuiTheme({
+    palette: {
+      primary: green,
+      secondary: pink,
+      type: 'dark',
+    },
+  });
+  return useObserver(() => (
+    <StoreProvider store={() => CreateGlobalStore()}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container
+          component={'main'}
+          fixed
+        >
+          <CurrentPage />
+        </Container>
+      </ThemeProvider>
+    </StoreProvider>
+  ));
 }
-
-const PageContainer = styled(Container)`
-  min-height: 100vh;
-  height: 100%;
-  padding: 0;
-`;
-
-const MainWrapper = styled(Row)`
-  background-color: ${(props) => props.theme.dividerColor.color};
-`;
 
 export default App;
 

@@ -1,90 +1,174 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Card, Table } from 'react-bootstrap';
-import ProductRow from './product-row';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Dropdown from '../dropdown/dropdown';
+import Table from '@material-ui/core/Table';
+import Paper from '@material-ui/core/Paper';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
+import TableContainer from '@material-ui/core/TableContainer';
+import RevenueTableRow from './revenue-table-row';
+import axios from 'axios';
+import H3 from '../typography/H3';
+import Box from '@material-ui/core/Box';
 
 const RevenueCard = ({
   className,
   ...props
 }) => {
-  const printers = {
-    Net: '$100.00',
-    Overhead: '$60.00',
-    Product: 'Printers',
-    Taxes: '$40.00',
-    Total: '$120.00',
-  };
+  const [timeIntervalSelection, setTimeIntervalSelection] = useState('daily');
+  const [categorySelection, setCategorySelection] = useState('all');
+  const [tableData, setTableData] = useState();
+  const loadedRef = useRef(false);
 
-  const ink = {
-    Net: '$300.00',
-    Overhead: '$80.00',
-    Product: 'Ink',
-    Taxes: '$10.00',
-    Total: '$30.00',
-  };
+  const timeIntervalOptions = [
+    {
+      label: 'Daily',
+      value: 'daily',
+    },
+    {
+      label: 'Weekly',
+      value: 'weekly',
+    },
+    {
+      label: 'Monthly',
+      value: 'monthly',
+    },
+  ];
 
-  const services = {
-    Net: '$430.00',
-    Overhead: '$73.00',
-    Product: 'Services',
-    Taxes: '$43.00',
-    Total: '$500.00',
-  };
+  const categoryOptions = [
+    {
+      label: 'All',
+      value: 'all',
+    },
+    {
+      label: 'Printers',
+      value: 'printers',
+    },
+    {
+      label: 'Services',
+      value: 'services',
+    },
+    {
+      label: 'Miscellaneous',
+      value: 'miscellaneous',
+    },
+    {
+      label: 'Ink',
+      value: 'ink',
+    },
+    {
+      label: 'Accessories',
+      value: 'accessories',
+    },
+  ];
 
-  const accessories = {
-    Net: '$43.00',
-    Overhead: '$73.00',
-    Product: 'Accessories',
-    Taxes: '$22.00',
-    Total: '$67.00',
-  };
-
-  const miscellaneous = {
-    Net: '$50.00',
-    Overhead: '$56.00',
-    Product: 'Miscellaneous',
-    Taxes: '$12.00',
-    Total: '$23.00',
-  };
+  useEffect(() => {
+    if (!loadedRef.current) {
+      axios.get('http://localhost:3000/revenue/list').then(
+        (resp) => {
+          const { data } = resp;
+          if (data) {
+            setTableData(resp.data);
+          }
+        });
+      loadedRef.current = true;
+    }
+    return () => {};
+  });
 
   return (
-    <Container
+    <RevenueCardContainer
       className={['RevenueCard', className].join(' ')}
       {...props}
     >
       <Card>
-        <Card.Header>
-          Revenue
-        </Card.Header>
-        <Card.Body>
-          <Table
-            striped
-            bordered
-            hover
-          >
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Net</th>
-                <th>Taxes</th>
-                <th>Overhead</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ProductRow product={printers} />
-              <ProductRow product={ink} />
-              <ProductRow product={services} />
-              <ProductRow product={accessories} />
-              <ProductRow product={miscellaneous} />
-            </tbody>
-          </Table>
-        </Card.Body>
+        <CardContent>
+          <Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <H3>
+                Revenue
+              </H3>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <Dropdown
+                id={'select-time-period'}
+                label={'Interval'}
+                items={timeIntervalOptions}
+                value={timeIntervalSelection}
+                setValue={(e) => setTimeIntervalSelection(e.target.value)}
+              />
+              <Dropdown
+                id={'select-category'}
+                label={'Category'}
+                items={categoryOptions}
+                value={categorySelection}
+                setValue={(e) => setCategorySelection(e.target.value)}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <TableContainer component={Paper}>
+                <Table
+                  stickyHeader
+                  size={'small'}
+                  style={{
+                    marginTop: '20px',
+                  }}
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align={'left'}>Product</TableCell>
+                      <TableCell align={'right'}>Net</TableCell>
+                      <TableCell align={'right'}>Taxes</TableCell>
+                      <TableCell align={'right'}>Overhead</TableCell>
+                      <TableCell align={'right'}>Total</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {
+                      tableData ?
+                        tableData.map(
+                          (item, index) => (
+                            <RevenueTableRow
+                              key={`revenue-table-row-${index}`}
+                              colSpan={5}
+                              {...item}
+                            />
+                          )
+                        )
+                        :
+                        <TableRow>
+                          <TableCell>
+                            Loading...
+                          </TableCell>
+                        </TableRow>
+                    }
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </Grid>
+        </CardContent>
       </Card>
-    </Container>
+    </RevenueCardContainer>
   );
 };
 
-const Container = styled.div``;
+const RevenueCardContainer = styled(Box)`
+  margin: 20px;
+`;
 
 export default RevenueCard;

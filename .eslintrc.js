@@ -13,7 +13,7 @@ module.exports = {
         },
     },
     plugins: ['react', 'react-hooks', 'import',  'sort-keys-fix'],
-    extends: ['eslint-config-react-app','eslint:recommended'],
+    extends: ['eslint-config-react-app', 'eslint:recommended'],
     rules: {
         'array-bracket-spacing': 'error',
         'array-callback-return': 'error',

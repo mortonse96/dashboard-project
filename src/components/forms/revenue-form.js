@@ -20,14 +20,23 @@ function RevenueForm({
   const [category, setCategory] = useState();
   const [netPrice, setNetPrice] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const submitForm = () => {
+  function submitForm() {
+    /**
+     * Object must look like this:
+     * {
+     * category,
+     * net,
+     * overhead,
+     * taxes
+     * }
+     */
     const item = {
       category,
       net: netPrice,
     };
     onSubmit(item);
     setFormSubmitted(true);
-  };
+  }
   const resetForm = () => {
     setCategory(null);
     setNetPrice(null);
@@ -51,6 +60,10 @@ function RevenueForm({
                     <H3>
                       Add Revenue Entry
                     </H3>
+                    <p>
+                      Category: {category} <br />
+                      Net Price: {netPrice}
+                    </p>
                   </Grid>
                   <Grid
                     item

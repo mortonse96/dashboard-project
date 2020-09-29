@@ -1,32 +1,24 @@
 import Grid from '@material-ui/core/Grid';
 import H3 from '../typography/H3';
-import RevenueCard from '../revenue-card/revenue-card';
 import RevenueForm from '../forms/revenue-form';
+import RevenueTableCard from '../revenue-table-card/revenue-table-card';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-function fetchRevenueData(setRevenueData, setLoading) {
-  axios.get('http://localhost:3000/revenue/list').then(
-    (resp) => {
-      const { data } = resp;
-      if (data) {
-        setRevenueData(resp.data);
-        setLoading(false);
-      }
-    });
-}
 
 function RevenueSection() {
   const [revenueData, setRevenueData] = useState();
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (!revenueData) {
-      fetchRevenueData(setRevenueData, setLoading);
-    }
-    return () => {};
-  }, [revenueData]);
-
-  const addRevenueItem = (entry) => {
+  function fetchRevenueData() {
+    axios.get('http://localhost:3000/revenue/list').then(
+      (resp) => {
+        const { data } = resp;
+        if (data) {
+          setRevenueData(resp.data);
+          setLoading(false);
+        }
+      });
+  }
+  function addRevenueItem(entry) {
     axios.post('http://localhost:3000/revenue/add', entry).then(
       (resp) => {
         const { data } = resp;
@@ -34,8 +26,11 @@ function RevenueSection() {
           setRevenueData([...revenueData, resp.data.entry]);
         }
       });
-  };
+  }
 
+  if (!revenueData) {
+    fetchRevenueData(setRevenueData, setLoading);
+  }
   return (
     <>
       <Grid
@@ -50,7 +45,7 @@ function RevenueSection() {
         item
         xs={12}
       >
-        <RevenueCard
+        <RevenueTableCard
           loading={loading}
           revenueData={revenueData}
         />

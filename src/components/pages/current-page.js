@@ -1,11 +1,11 @@
 import React from 'react';
-import Dashboard from './dashboard';
 import Pages from '../../models/pages';
 import { useObserver } from 'mobx-react-lite';
 import { useStoreContext } from '../../contexts/store-provider/useStoreContext';
+import DashboardPage from './dashboard-page';
 
 const PageComponents = {
-  [Pages.Dashboard]: <Dashboard />,
+  [Pages.Dashboard]: <DashboardPage />,
 };
 
 const PageComponent = ({ currentPage }) => {

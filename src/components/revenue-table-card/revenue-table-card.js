@@ -15,7 +15,7 @@ import RevenueTableRow from './revenue-table-row';
 import H3 from '../typography/H3';
 import Box from '@material-ui/core/Box';
 
-const RevenueCard = ({
+const RevenueTableCard = ({
   className,
   revenueData,
   loading,
@@ -156,4 +156,4 @@ const RevenueCardContainer = styled(Box)`
   margin: 20px;
 `;
 
-export default RevenueCard;
+export default RevenueTableCard;

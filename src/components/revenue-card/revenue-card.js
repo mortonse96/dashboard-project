@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,18 +12,17 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import RevenueTableRow from './revenue-table-row';
-import axios from 'axios';
 import H3 from '../typography/H3';
 import Box from '@material-ui/core/Box';
 
 const RevenueCard = ({
   className,
+  revenueData,
+  loading,
   ...props
 }) => {
   const [timeIntervalSelection, setTimeIntervalSelection] = useState('daily');
   const [categorySelection, setCategorySelection] = useState('all');
-  const [tableData, setTableData] = useState();
-  const loadedRef = useRef(false);
 
   const timeIntervalOptions = [
     {
@@ -66,20 +65,6 @@ const RevenueCard = ({
       value: 'accessories',
     },
   ];
-
-  useEffect(() => {
-    if (!loadedRef.current) {
-      axios.get('http://localhost:3000/revenue/list').then(
-        (resp) => {
-          const { data } = resp;
-          if (data) {
-            setTableData(resp.data);
-          }
-        });
-      loadedRef.current = true;
-    }
-    return () => {};
-  });
 
   return (
     <RevenueCardContainer
@@ -139,8 +124,8 @@ const RevenueCard = ({
                   </TableHead>
                   <TableBody>
                     {
-                      tableData ?
-                        tableData.map(
+                      !loading ?
+                        revenueData.map(
                           (item, index) => (
                             <RevenueTableRow
                               key={`revenue-table-row-${index}`}

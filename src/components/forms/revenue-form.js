@@ -14,15 +14,25 @@ import { Typography } from '@material-ui/core';
 
 function RevenueForm({
   className,
+  onSubmit = () => {},
   ...props
 }) {
   const [category, setCategory] = useState();
-  const [netPrice, setNetPrice] = useState();
+  const [netPrice, setNetPrice] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const submitForm = () => {
+    const item = {
+      category,
+      net: netPrice,
+    };
+    onSubmit(item);
     setFormSubmitted(true);
   };
-
+  const resetForm = () => {
+    setCategory(null);
+    setNetPrice(null);
+    setFormSubmitted(false);
+  };
   return (
     <Container
       className={['RevenueForm', className].join(' ')}
@@ -30,101 +40,115 @@ function RevenueForm({
     >
       <Card>
         <CardContent>
-          {!formSubmitted &&
-            <form>
-              <Grid container>
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <H3>
-                    Add Revenue Entry
-                  </H3>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                >
-                  <Dropdown
-                    id={'category'}
-                    label={'Category'}
-                    items={productCategories}
-                    value={category}
-                    setValue={(e) => setCategory(e.target.value)}
-                  />
-                  <NumberInput
-                    id={'net-price'}
-                    label={'Net Price'}
-                    value={netPrice}
-                    setValue={(e) => setNetPrice(e.target.value)}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <Box
-                    display={'flex'}
-                    flexDirection={'row-reverse'}
+          <form>
+            <Grid container>
+              {!formSubmitted &&
+                <>
+                  <Grid
+                    item
+                    xs={12}
                   >
-                    <Button
-                      variant={'contained'}
-                      color={'primary'}
-                      onClick={submitForm}
+                    <H3>
+                      Add Revenue Entry
+                    </H3>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                  >
+                    <Dropdown
+                      id={'category'}
+                      label={'Category'}
+                      items={productCategories}
+                      value={category}
+                      setValue={(e) => setCategory(e.target.value)}
+                    />
+                    <NumberInput
+                      id={'net-price'}
+                      label={'Net Price'}
+                      value={netPrice}
+                      setValue={(e) => setNetPrice(e.target.value)}
+                    />
+                  </Grid>
+                </>
+              }
+              {
+                formSubmitted &&
+                  <>
+                    <Grid
+                      item
+                      xs={12}
                     >
-                      Submit
-                    </Button>
-                  </Box>
-                </Grid>
+                      <H3>
+                        Thank you!
+                      </H3>
+                      <p>
+                        Your data has been submitted.
+                      </p>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={2}
+                    >
+                      <Box>
+                        <Typography
+                          variant={'h6'}
+                        >
+                          Category
+                        </Typography>
+                        <p>
+                          {category}
+                        </p>
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant={'h6'}
+                        >
+                          Net Price
+                        </Typography>
+                        <p>
+                          ${FormatMoney(netPrice)}
+                        </p>
+                      </Box>
+                    </Grid>
+                  </>
+              }
+              <Grid
+                item
+                xs={12}
+              >
+                <Box
+                  display={'flex'}
+                  flexDirection={'row-reverse'}
+                >
+                  {
+                    formSubmitted ?
+                      (
+                        <Button
+
+                          variant={'contained'}
+                          color={'primary'}
+                          onClick={resetForm}
+                        >
+                          Add Another
+                        </Button>
+                      )
+                      :
+                      (
+                        <Button
+
+                          variant={'contained'}
+                          color={'primary'}
+                          onClick={submitForm}
+                        >
+                          Submit
+                        </Button>
+                      )
+                  }
+                </Box>
               </Grid>
-            </form>
-          }
-          {
-            formSubmitted &&
-              <Grid container>
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <H3>
-                    Thank you!
-                  </H3>
-                  <p>
-                    Your data has been submitted.
-                  </p>
-                </Grid>
-                <Grid
-                  item
-                  xs={2}
-                >
-                  <Box variant={'outlined'}>
-                    <Typography
-                      variant={'h6'}
-                    >
-                      Category
-                    </Typography>
-                    <p>
-                      {category}
-                    </p>
-                  </Box>
-                </Grid>
-                <Grid
-                  item
-                  xs={2}
-                >
-                  <Box variant={'outlined'}>
-                    <Typography
-                      variant={'h6'}
-                    >
-                      Net Price
-                    </Typography>
-                    <p>
-                      ${FormatMoney(netPrice)}
-                    </p>
-                  </Box>
-                </Grid>
-              </Grid>
-          }
+            </Grid>
+          </form>
         </CardContent>
       </Card>
     </Container>

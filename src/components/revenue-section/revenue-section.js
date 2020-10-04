@@ -2,7 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import H3 from '../typography/H3';
 import RevenueForm from '../forms/revenue-form';
 import RevenueTableCard from '../revenue-table-card/revenue-table-card';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function RevenueSection() {

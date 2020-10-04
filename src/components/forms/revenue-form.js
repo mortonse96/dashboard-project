@@ -37,11 +37,11 @@ function RevenueForm({
     onSubmit(item);
     setFormSubmitted(true);
   }
-  const resetForm = () => {
+  function resetForm() {
     setCategory(null);
     setNetPrice(null);
     setFormSubmitted(false);
-  };
+  }
   return (
     <Container
       className={['RevenueForm', className].join(' ')}
@@ -60,10 +60,6 @@ function RevenueForm({
                     <H3>
                       Add Revenue Entry
                     </H3>
-                    <p>
-                      Category: {category} <br />
-                      Net Price: {netPrice}
-                    </p>
                   </Grid>
                   <Grid
                     item

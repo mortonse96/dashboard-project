@@ -37,8 +37,8 @@ exports.addEntry = (req, res) => {
     const entry = {
       category: req.body.category,
       net: parseInt(req.body.net),
-      overhead: parseInt(req.body.overhead ?? 0),
-      taxes: parseInt(req.body.taxes  ?? 0),
+      overhead: parseInt(req.body.overhead)||0,
+      taxes: parseInt(req.body.taxes) ||0,
       get total() {
         return this.net + this.overhead + this.taxes;
       },

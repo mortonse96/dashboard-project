@@ -19,6 +19,8 @@ function RevenueForm({
 }) {
   const [category, setCategory] = useState();
   const [netPrice, setNetPrice] = useState(null);
+  const [taxes, setTaxes] = useState(null);
+  const [overhead, setOverhead] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   function submitForm() {
     /**
@@ -33,6 +35,8 @@ function RevenueForm({
     const item = {
       category,
       net: netPrice,
+      overhead,
+      taxes,
     };
     onSubmit(item);
     setFormSubmitted(true);
@@ -40,6 +44,7 @@ function RevenueForm({
   const resetForm = () => {
     setCategory(null);
     setNetPrice(null);
+    setTaxes(null);
     setFormSubmitted(false);
   };
   return (
@@ -82,6 +87,18 @@ function RevenueForm({
                       value={netPrice}
                       setValue={(e) => setNetPrice(e.target.value)}
                     />
+                    <NumberInput
+                      id={'taxes'}
+                      label={'Taxes'}
+                      value={taxes}
+                      setValue={(e) => setTaxes(e.target.value)}
+                    />
+                    <NumberInput
+                      id={'overhead'}
+                      label={'Overhead'}
+                      value={overhead}
+                      setValue={(e) => setOverhead(e.target.value)}
+                    />
                   </Grid>
                 </>
               }
@@ -121,6 +138,26 @@ function RevenueForm({
                         </Typography>
                         <p>
                           ${FormatMoney(netPrice)}
+                        </p>
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant={'h6'}
+                        >
+                          Taxes
+                        </Typography>
+                        <p>
+                          ${FormatMoney(taxes)}
+                        </p>
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant={'h6'}
+                        >
+                          Overhead
+                        </Typography>
+                        <p>
+                          ${FormatMoney(overhead)}
                         </p>
                       </Box>
                     </Grid>

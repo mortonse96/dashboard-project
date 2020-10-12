@@ -117,8 +117,8 @@ const RevenueTableCard = ({
                     <TableRow>
                       <TableCell align={'left'}>Product</TableCell>
                       <TableCell align={'right'}>Net</TableCell>
-                      <TableCell align={'right'}>Taxes</TableCell>
                       <TableCell align={'right'}>Overhead</TableCell>
+                      <TableCell align={'right'}>Taxes</TableCell>
                       <TableCell align={'right'}>Total</TableCell>
                     </TableRow>
                   </TableHead>
